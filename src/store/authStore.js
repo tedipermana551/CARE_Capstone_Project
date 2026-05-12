@@ -2,7 +2,6 @@
 import { create } from "zustand";
 import { authApi, profileApi } from "../api/realServices";
 import { DEMO_PROFILE, DEMO_PARTNER_PROFILE } from "../mock/seedData";
-import { ESLint } from "eslint";
 
 const useMock = import.meta.env.VITE_USE_MOCK === "true";
 

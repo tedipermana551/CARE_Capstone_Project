@@ -26,16 +26,17 @@ function App() {
           path="/profile-setup"
           element={
             <ProtectedRoute>
-              <ProfileSetupPage />
+              {/*<ProfileSetupPage />*/}
+              <div className="p-4">Profile setup coming soon...</div>{/* GANTI DENGAN COMPONENT PROFILE SETUP KETIKA SUDAH SIAP */}
             </ProtectedRoute>
           }
         />
-        {/* Protected app routes */}
+        {/* Protected app routes (AKTIFKAN KODE DIBAWAH KETIKA FITUR SUDAH SIAP) 
         <Route path="/dashboard" element={<AppWithLayout><DashboardPage /></AppWithLayout>} />
         <Route path="/logs" element={<AppWithLayout><DailyLogPage /></AppWithLayout>} />
         <Route path="/appointments" element={<AppWithLayout><AppointmentsPage /></AppWithLayout>} />
         <Route path="/stats" element={<AppWithLayout><StatsPage /></AppWithLayout>} />
-        <Route path="/partner-stats" element={<AppWithLayout><PartnerStatsPage /></AppWithLayout>} />
+        <Route path="/partner-stats" element={<AppWithLayout><PartnerStatsPage /></AppWithLayout>} />*/}
       </Routes>
     </BrowserRouter>
   )
