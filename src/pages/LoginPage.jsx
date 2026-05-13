@@ -1,33 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowRight, Lock, Mail, Moon, Sun } from 'lucide-react'
-import useThemeStore from '../store/themeStore'
-import careLogo from '/CARE.svg'
+import { Link, useNavigate } from 'react-router-dom' 
+import { ArrowRight, Lock, Mail } from 'lucide-react'
+import AppLayout from '../components/layout/AppLayout'
 
 export default function LoginPage() {
+const navigate = useNavigate(); 
+
+const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Login sukses!");
+    navigate('/dashboard');
+};
+
 return (
-    <div className="min-h-screen bg-cream dark:bg-cream-dark transition-colors duration-300">
-
-      {/* Navbar */}
-    <nav className="fixed top-0 left-0 right-0 bg-cream/90 dark:bg-cream-dark/90 backdrop-blur-md border-b border-border dark:border-border-dark z-50 px-8 md:px-10 flex items-center justify-between h-16">
-        <div className="flex items-center gap-2.5">
-        <img src={careLogo} alt="CARE Logo" className="w-auto h-14" />
-        <span className="font-display font-bold text-xl text-charcoal dark:text-charcoal-dark">
-            CARE
-        </span>
-        </div>
-
-        <button
-        onClick={useThemeStore((state) => state.toggleTheme)}
-        className="p-2 rounded-[10px] border border-border dark:border-border-dark text-charcoal dark:text-charcoal-dark"
-        >
-        {useThemeStore((state) => state.isDarkMode)
-            ? <Sun size={16} />
-            : <Moon size={16} />
-        }
-        </button>
-    </nav>
-
+    <AppLayout>
       {/* Form */}
     <div className="min-h-screen flex items-center justify-center px-6 pt-24">
         <div className="w-full max-w-md">
@@ -47,7 +33,7 @@ return (
             Sign in to continue your journey
         </p>
 
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSubmit}>
 
             <div>
             <label className="block text-xs font-semibold tracking-[3px] text-muted dark:text-muted-dark mb-2">
@@ -61,6 +47,7 @@ return (
                 type="email"
                 placeholder="you@example.com"
                 className="w-full bg-transparent outline-none text-charcoal dark:text-charcoal-dark placeholder:text-muted dark:placeholder:text-muted-dark"
+                required 
                 />
             </div>
             </div>
@@ -77,6 +64,7 @@ return (
                 type="password"
                 placeholder="Your password"
                 className="w-full bg-transparent outline-none text-charcoal dark:text-charcoal-dark placeholder:text-muted dark:placeholder:text-muted-dark"
+                required
                 />
             </div>
             </div>
@@ -101,6 +89,6 @@ return (
 
         </div>
     </div>
-    </div>
+    </AppLayout>
 )
 }

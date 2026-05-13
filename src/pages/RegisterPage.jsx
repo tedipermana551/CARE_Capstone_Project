@@ -1,41 +1,17 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
 ArrowRight,
 Lock,
 Mail,
 User,
-Moon,
-Sun,
 } from 'lucide-react'
 
-import useThemeStore from '../store/themeStore'
-import careLogo from '/CARE.svg'
+import AppLayout from '../components/layout/AppLayout'
 
 export default function RegisterPage() {
 return (
-    <div className="min-h-screen bg-cream dark:bg-cream-dark transition-colors duration-300">
-
-      {/* Navbar */}
-    <nav className="fixed top-0 left-0 right-0 bg-cream/90 dark:bg-cream-dark/90 backdrop-blur-md border-b border-border dark:border-border-dark z-50 px-8 md:px-10 flex items-center justify-between h-16">
-        <div className="flex items-center gap-2.5">
-        <img src={careLogo} alt="CARE Logo" className="w-auto h-14" />
-
-        <span className="font-display font-bold text-xl text-charcoal dark:text-charcoal-dark">
-            CARE
-        </span>
-        </div>
-
-        <button
-        onClick={useThemeStore((state) => state.toggleTheme)}
-        className="p-2 rounded-[10px] border border-border dark:border-border-dark text-charcoal dark:text-charcoal-dark"
-        >
-        {useThemeStore((state) => state.isDarkMode)
-            ? <Sun size={16} />
-            : <Moon size={16} />
-        }
-        </button>
-    </nav>
+    <AppLayout>
 
       {/* Form */}
     <div className="min-h-screen flex items-center justify-center px-6 pt-24">
@@ -147,6 +123,6 @@ return (
 
         </div>
     </div>
-    </div>
+    </AppLayout>
 )
 }
