@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { pregnancyApi, statsApi, appointmentsApi } from "../api/realServices";
+import { pregnancyApi, statsApi, appointmentsApi } from "../api/services";
 
 const usePregnancyStore = create((set) => ({
     pregnancyStatus: null,
-    SummaryStats: null,
+    summaryStats: null,
     streakStats: null,
     upcomingAppointments: [],
     isLoading: false,

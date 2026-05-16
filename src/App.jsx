@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import DemoBanner from './components/ui/DemoBanner'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import DashboardPage from './pages/DashboardPage'
+import useThemeStore from './store/themeStore'
+
 
 function AppWithLayout({ children }) {
   return (
@@ -15,9 +18,15 @@ function AppWithLayout({ children }) {
 }
 
 function App() {
+  const initializeTheme = useThemeStore((state) => state.initializeTheme)
+
+  useEffect(() => {
+    initializeTheme()
+  }, [])
+
   return (
     <BrowserRouter>
-    <DemoBanner />
+      <DemoBanner />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -26,11 +35,12 @@ function App() {
           path="/profile-setup"
           element={
             <ProtectedRoute>
-              {/*<ProfileSetupPage />*/}
-              <div className="p-4">Profile setup coming soon...</div>{/* GANTI DENGAN COMPONENT PROFILE SETUP KETIKA SUDAH SIAP */}
+              <div className="p-4">Profile setup coming soon...</div>
             </ProtectedRoute>
           }
         />
+        <Route path="/dashboard" element={<DashboardPage />} />
+
         {/* Protected app routes (AKTIFKAN KODE DIBAWAH KETIKA FITUR SUDAH SIAP) 
         <Route path="/dashboard" element={<AppWithLayout><DashboardPage /></AppWithLayout>} />
         <Route path="/logs" element={<AppWithLayout><DailyLogPage /></AppWithLayout>} />

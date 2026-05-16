@@ -1,6 +1,6 @@
 /* eslint-disable no-empty */
 import { create } from "zustand";
-import { authApi, profileApi } from "../api/realServices";
+import { authApi, profileApi } from "../api/services";
 import { DEMO_PROFILE, DEMO_PARTNER_PROFILE } from "../mock/seedData";
 
 const useMock = import.meta.env.VITE_USE_MOCK === "true";
@@ -22,8 +22,9 @@ const useAuthStore = create((set) => ({
             let profile = null
             if (useMock) {
                 const role = localStorage.getItem("demo_role") || "mother"
-                profile = role === "husband" ? DEMO_PROFILE : DEMO_PARTNER_PROFILE
+                profile = role === "mother" ? DEMO_PROFILE : DEMO_PARTNER_PROFILE
             }
+            
             set({user, profile, isAuthenticated: true, isLoading: false})
             return { success: true, needsSetup: false }
         } catch (err) {
@@ -59,10 +60,16 @@ const useAuthStore = create((set) => ({
 
     fetchProfile: async () => {
         try {
+            if (useMock) {
+                const role = localStorage.getItem("demo_role") || "mother"
+                const profile = role === "mother" ? DEMO_PROFILE : DEMO_PARTNER_PROFILE
+                set({ profile })
+                return profile
+            }
             const {data} = await profileApi.me()
-            set({ profile: data })
+            set({ profile: data.data })
             return data.data
-        } catch {
+        } catch (err) {
             return null
         }
     },
