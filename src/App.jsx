@@ -8,6 +8,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute'
 import DailyLogPage from './pages/DailyLogPage'
 import AppointmentsPage from './pages/AppointmentsPage'
 import DashboardPage from './pages/DashboardPage'
+import StatsPage from './pages/StatsPage'
 import useThemeStore from './store/themeStore'
 
 
@@ -42,6 +43,7 @@ function App() {
           }
         />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/stats" element={<StatsPage />} />
 
         {/* Protected app routes (AKTIFKAN KODE DIBAWAH KETIKA FITUR SUDAH SIAP) 
         <Route path="/dashboard" element={<AppWithLayout><DashboardPage /></AppWithLayout>} />
