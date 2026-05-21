@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import DemoBanner from './components/ui/DemoBanner'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import DailyLogPage from './pages/DailyLogPage'
 import DashboardPage from './pages/DashboardPage'
 import useThemeStore from './store/themeStore'
 
