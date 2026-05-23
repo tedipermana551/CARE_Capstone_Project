@@ -307,3 +307,31 @@ export const statsApi = {
     return ok(DEMO_STREAKS)
   },
 }
+
+export const partnerStatsApi = {
+  summary: async (params = {}) => {
+    await delay()
+    return ok(buildSummaryStats(params.period || 'monthly', partnerLogs()))
+  },
+  mood: async (params = {}) => {
+    await delay()
+    return ok(buildMoodStats(params.period || 'monthly', partnerLogs()))
+  },
+  sleep: async (params = {}) => {
+    await delay()
+    return ok(buildSleepStats(params.period || 'monthly', partnerLogs()))
+  },
+  exercise: async (params = {}) => {
+    await delay()
+    return ok(buildExerciseStats(params.period || 'monthly', partnerLogs()))
+  },
+  streaks: async () => {
+    await delay()
+    const logs = partnerLogs()
+    return ok({
+      current_streak_days: Math.min(14, logs.length),
+      longest_streak_days: Math.min(22, logs.length),
+      total_logged_days: logs.length,
+    })
+  },
+}
