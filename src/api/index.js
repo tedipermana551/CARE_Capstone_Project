@@ -10,3 +10,4 @@ export const pregnancyApi = services.pregnancyApi;
 export const logsApi = services.logsApi;
 export const appointmentsApi = services.appointmentsApi;
 export const statsApi = services.statsApi;
+export const partnerStatsApi = services.partnerStatsApi;
