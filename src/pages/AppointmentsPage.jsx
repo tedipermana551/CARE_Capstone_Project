@@ -5,6 +5,7 @@ import { appointmentsApi } from '../api/services'
 import { Card, Badge, Spinner, EmptyState, Modal, Alert } from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import Input, { Textarea } from '../components/ui/Input'
+import DashboardLayout from '../components/layout/DashboardLayout'
 
 function safeFormat(dateStr, pattern, fallback = '—') {
   try { return dateStr ? format(parseISO(dateStr), pattern) : fallback }
@@ -63,28 +64,28 @@ function AppointmentCard({ appt, onEdit, onDelete, onComplete }) {
       <div className="flex justify-between items-start gap-4">
         <div className="flex-1">
           <div className="flex items-center gap-2.5 mb-2 flex-wrap">
-            <h3 className="font-semibold text-content-base text-sm">{appt.title}</h3>
+            <h3 className="font-semibold text-charcoal dark:text-charcoal-dark text-sm">{appt.title}</h3>
             {appt.is_completed && <Badge variant="sage">✓ Completed</Badge>}
             {!appt.is_completed && past && <Badge variant="amber">Past due</Badge>}
           </div>
           <div className="flex flex-col gap-1.5">
-            <div className="flex items-center gap-2 text-xs text-content-subtle">
+            <div className="flex items-center gap-2 text-xs text-muted dark:text-muted-dark">
               <Calendar size={12} className="text-brand" />
               {safeFormat(appt.appointment_date, 'EEEE, MMMM d, yyyy · h:mm a')}
             </div>
-            <div className="flex items-center gap-2 text-xs text-content-subtle">
+            <div className="flex items-center gap-2 text-xs text-muted dark:text-muted-dark">
               <User size={12} className="text-accent" />
               Dr. {appt.doctor_name}
             </div>
             {appt.location && (
-              <div className="flex items-center gap-2 text-xs text-content-subtle">
+              <div className="flex items-center gap-2 text-xs text-muted dark:text-muted-dark">
                 <MapPin size={12} className="text-sleep" />
                 {appt.location}
               </div>
             )}
           </div>
           {appt.notes && (
-            <p className="mt-2.5 text-xs text-content-subtle italic">"{appt.notes}"</p>
+            <p className="mt-2.5 text-xs text-muted dark:text-muted-dark italic">"{appt.notes}"</p>
           )}
         </div>
 
@@ -96,13 +97,13 @@ function AppointmentCard({ appt, onEdit, onDelete, onComplete }) {
                 <CheckCircle2 size={13} />
               </button>
               <button onClick={() => onEdit(appt)}
-                className="p-1.5 rounded-lg border border-stroke bg-bg-surface text-content-subtle hover:border-brand-strong/40 transition-colors cursor-pointer">
+                className="p-1.5 rounded-lg border border-border dark:border-border-dark bg-white dark:bg-dark text-muted dark:text-muted-dark hover:border-brand-strong/40 transition-colors cursor-pointer">
                 <Pencil size={13} />
               </button>
             </>
           )}
           <button onClick={() => onDelete(appt)}
-            className="p-1.5 rounded-lg border border-stroke bg-bg-surface text-content-subtle hover:border-red-400 hover:text-red-500 transition-colors cursor-pointer">
+            className="p-1.5 rounded-lg border border-border dark:border-border-dark bg-white dark:bg-dark text-muted dark:text-muted-dark hover:border-red-400 hover:text-red-500 transition-colors cursor-pointer">
             <Trash2 size={13} />
           </button>
         </div>
@@ -118,7 +119,7 @@ const FILTERS = [
   { key: 'completed', label: 'Completed' },
 ]
 
-export default function AppointmentsPage() {
+function AppointmentsPageContent() {
   const [appointments, setAppointments] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -173,8 +174,8 @@ export default function AppointmentsPage() {
     <div className="max-w-[760px] animate-fade-up">
       <div className="flex justify-between items-start mb-7 flex-wrap gap-3">
         <div>
-          <h1 className="font-display text-[1.8rem] font-bold text-content-base mb-1">Appointments</h1>
-          <p className="text-content-subtle text-sm">Manage your prenatal appointments and check-ups</p>
+          <h1 className="font-display text-[1.8rem] font-bold text-charcoal dark:text-charcoal-dark mb-1">Appointments</h1>
+          <p className="text-muted dark:text-muted-dark text-sm">Manage your prenatal appointments and check-ups</p>
         </div>
         {!showForm && <Button onClick={() => setShowForm(true)}><Plus size={15} /> New appointment</Button>}
       </div>
@@ -183,7 +184,7 @@ export default function AppointmentsPage() {
 
       {showForm && (
         <Card className="mb-6">
-          <h3 className="font-display text-xl font-semibold text-content-base mb-5">New Appointment</h3>
+          <h3 className="font-display text-xl font-semibold text-charcoal dark:text-charcoal-dark mb-5">New Appointment</h3>
           <AppointmentForm onSave={handleCreate} onCancel={() => setShowForm(false)} isLoading={saving} />
         </Card>
       )}
@@ -193,7 +194,7 @@ export default function AppointmentsPage() {
       </Modal>
 
       <Modal isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} title="Delete appointment?">
-        <p className="text-content-subtle mb-6">Delete <strong>"{deleteTarget?.title}"</strong>? This cannot be undone.</p>
+        <p className="text-muted dark:text-muted-dark mb-6">Delete <strong>"{deleteTarget?.title}"</strong>? This cannot be undone.</p>
         <div className="flex gap-2.5">
           <Button variant="danger" onClick={handleDelete} className="flex-1">Delete</Button>
           <Button variant="ghost" onClick={() => setDeleteTarget(null)}>Cancel</Button>
@@ -201,12 +202,12 @@ export default function AppointmentsPage() {
       </Modal>
 
       {/* Filter tabs */}
-      <div className="flex gap-1 mb-5 bg-bg-surface p-1 rounded-xl border border-stroke w-fit">
+      <div className="flex gap-1 mb-5 bg-white dark:bg-dark p-1 rounded-xl border border-border dark:border-border-dark w-fit">
         {FILTERS.map(tab => (
           <button key={tab.key} onClick={() => setFilter(tab.key)}
             className={[
               'px-4 py-1.5 rounded-[9px] text-xs font-medium transition-all duration-200 cursor-pointer border-0',
-              filter === tab.key ? 'bg-brand-strong text-white' : 'bg-transparent text-content-subtle hover:text-content-base',
+              filter === tab.key ? 'bg-rose-deep text-white' : 'bg-transparent text-muted dark:text-muted-dark hover:text-charcoal dark:hover:text-charcoal-dark',
             ].join(' ')}>
             {tab.label}
           </button>
@@ -225,10 +226,18 @@ export default function AppointmentsPage() {
       ) : (
         <div className="flex flex-col gap-3.5">
           {filtered.map(appt => (
-            <AppointmentCard key={appt.id} appt={appt} onEdit={setEditTarget} onDelete={setDeleteTarget} onComplete={handleComplete} />
+                <AppointmentCard key={appt.id} appt={appt} onEdit={setEditTarget} onDelete={setDeleteTarget} onComplete={handleComplete} />
           ))}
         </div>
       )}
     </div>
   )
 }
+ 
+    export default function AppointmentsPage() {
+      return (
+        <DashboardLayout activePage="appointments">
+          <AppointmentsPageContent />
+        </DashboardLayout>
+      )
+    }
