@@ -1,7 +1,7 @@
 import React from 'react'
 
 const baseInput =
-  'w-full rounded-[10px] border border-border bg-white text-charcoal text-sm px-3.5 py-2.5 transition-all duration-200 outline-none focus:border-rose focus:ring-2 focus:ring-rose/15 placeholder:text-muted-light'
+  'w-full rounded-[10px] border border-border bg-white text-charcoal text-sm px-3.5 py-2.5 transition-all duration-200 outline-none focus:border-rose focus:ring-2 focus:ring-rose/15 placeholder:text-muted-light dark:bg-dark dark:border-border-dark dark:text-charcoal-dark dark:placeholder:text-muted-dark dark:focus:ring-rose/15'
 
 export default function Input({ label, error, hint, icon: Icon, type = 'text', className = '', containerClassName = '', ...props }) {
   return (

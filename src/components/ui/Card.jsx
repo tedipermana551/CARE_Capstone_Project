@@ -5,7 +5,7 @@ export function Card({ children, className = '', hover = false, onClick }) {
     <div
       onClick={onClick}
       className={[
-        'bg-white rounded-2xl border border-border shadow-sm p-6 transition-all duration-200',
+        'bg-white dark:bg-dark rounded-2xl border border-border dark:border-border-dark shadow-sm p-6 transition-all duration-200',
         hover ? 'hover:-translate-y-0.5 hover:shadow-md cursor-pointer' : '',
         onClick ? 'cursor-pointer' : '',
         className,
@@ -81,14 +81,14 @@ export function Alert({ type = 'error', children }) {
 
 export function EmptyState({ icon: Icon, title, description, action }) {
   return (
-    <div className="text-center py-12 px-6 text-muted">
+    <div className="text-center py-12 px-6 text-muted dark:text-muted-dark">
       {Icon && (
         <div className="w-14 h-14 rounded-full bg-border flex items-center justify-center mx-auto mb-4 text-muted-light">
           <Icon size={24} />
         </div>
       )}
-      <p className="font-semibold text-charcoal mb-1.5">{title}</p>
-      {description && <p className="text-sm max-w-[280px] mx-auto mb-5">{description}</p>}
+      <p className="font-semibold text-charcoal dark:text-charcoal-dark mb-1.5">{title}</p>
+      {description && <p className="text-sm max-w-[280px] mx-auto mb-5 text-muted dark:text-muted-dark">{description}</p>}
       {action}
     </div>
   )
@@ -103,7 +103,7 @@ export function Modal({ isOpen, onClose, title, children }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-3xl p-8 w-full max-w-[520px] max-h-[90vh] overflow-y-auto shadow-lg animate-fade-up"
+        className="bg-white dark:bg-dark border border-border dark:border-border-dark rounded-3xl p-8 w-full max-w-[520px] max-h-[90vh] overflow-y-auto shadow-lg animate-fade-up"
       >
         {title && (
           <h2 className="font-display text-[1.4rem] font-semibold text-charcoal mb-6">{title}</h2>

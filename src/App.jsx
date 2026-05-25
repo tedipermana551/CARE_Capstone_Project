@@ -46,6 +46,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/stats" element={<StatsPage />} />
         <Route path="/partner-stats" element={<PartnerStatsPage />} />
+        <Route path="/logs" element={<DailyLogPage />} />
 
         {/* Protected app routes (AKTIFKAN KODE DIBAWAH KETIKA FITUR SUDAH SIAP) 
         <Route path="/dashboard" element={<AppWithLayout><DashboardPage /></AppWithLayout>} />

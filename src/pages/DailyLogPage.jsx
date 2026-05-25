@@ -5,13 +5,14 @@ import { logsApi } from '../api/services'
 import { Card, Badge, Spinner, EmptyState, Alert, Modal } from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import Input, { Textarea, Select } from '../components/ui/Input'
+import DashboardLayout from '../components/layout/DashboardLayout'
 
 const MOODS = [
   { value: 'great',    label: '😄 Great',    color: '#8aab96',  ring: 'border-[#8aab96]',   bg: 'bg-[#8aab96]/10',   text: 'text-[#3d7a56]' },
   { value: 'good',     label: '😊 Good',     color: '#4a9d6f',  ring: 'border-[#4a9d6f]',   bg: 'bg-[#4a9d6f]/10',   text: 'text-[#4a9d6f]' },
   { value: 'neutral',  label: '😐 Neutral',  color: '#e8b86d',  ring: 'border-[#e8b86d]',   bg: 'bg-[#e8b86d]/10',   text: 'text-[#a67c00]' },
-  { value: 'bad',      label: '😔 Bad',      color: '#e8899a',  ring: 'border-[#e8899a]',   bg: 'bg-[#e8899a]/10',   text: 'text-brand-strong' },
-  { value: 'terrible', label: '😢 Terrible', color: '#c0526a',  ring: 'border-brand-strong',   bg: 'bg-brand-strong/10',   text: 'text-brand-strong' },
+  { value: 'bad',      label: '😔 Bad',      color: '#e8899a',  ring: 'border-[#e8899a]',   bg: 'bg-[#e8899a]/10',   text: 'text-rose-deep' },
+  { value: 'terrible', label: '😢 Terrible', color: '#c0526a',  ring: 'border-rose-deep',   bg: 'bg-rose-deep/10',   text: 'text-rose-deep' },
 ]
 const MOOD_BADGE = { great: 'sage', good: 'sage', neutral: 'amber', bad: 'rose', terrible: 'rose' }
 
@@ -44,7 +45,7 @@ function LogForm({ initial = {}, onSave, onCancel, isLoading, isEdit = false }) 
 
       {/* Mood */}
       <div>
-        <p className="text-[0.75rem] font-semibold text-content-subtle uppercase tracking-widest mb-2.5">How are you feeling? *</p>
+        <p className="text-[0.75rem] font-semibold text-muted uppercase tracking-widest mb-2.5">How are you feeling? *</p>
         <div className="flex gap-2 flex-wrap">
           {MOODS.map((m) => {
             const active = form.mood === m.value
@@ -54,7 +55,7 @@ function LogForm({ initial = {}, onSave, onCancel, isLoading, isEdit = false }) 
                 onClick={() => setForm(p => ({ ...p, mood: m.value }))}
                 className={[
                   'px-3.5 py-2 rounded-full border-2 text-xs cursor-pointer transition-all duration-200',
-                  active ? `${m.ring} ${m.bg} ${m.text} font-semibold` : 'border-stroke bg-bg-surface text-content-subtle hover:border-stroke-strong',
+                  active ? `${m.ring} ${m.bg} ${m.text} font-semibold` : 'border-border bg-white text-muted hover:border-border-strong',
                 ].join(' ')}
               >
                 {m.label}
@@ -94,49 +95,49 @@ function LogCard({ log, onEdit, onDelete }) {
     <Card className="!p-5">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <p className="font-semibold text-content-base mb-1.5">{format(parseISO(log.date), 'EEEE, MMMM d')}</p>
+          <p className="font-semibold text-charcoal dark:text-charcoal-dark mb-1.5">{format(parseISO(log.date), 'EEEE, MMMM d')}</p>
           {mood && <Badge variant={MOOD_BADGE[log.mood] || 'muted'}>{mood.label}</Badge>}
         </div>
         <div className="flex gap-1.5">
           <button onClick={() => onEdit(log)}
-            className="p-2 rounded-lg border border-stroke bg-bg-surface text-content-subtle hover:border-brand-strong/50 transition-colors cursor-pointer">
+            className="p-2 rounded-lg border border-border bg-white text-muted hover:border-rose-deep/50 transition-colors cursor-pointer">
             <Pencil size={13} />
           </button>
           <button onClick={() => onDelete(log)}
-            className="p-2 rounded-lg border border-stroke bg-bg-surface text-content-subtle hover:border-red-500 hover:text-red-500 transition-colors cursor-pointer">
+            className="p-2 rounded-lg border border-border bg-white text-muted hover:border-red-500 hover:text-red-500 transition-colors cursor-pointer">
             <Trash2 size={13} />
           </button>
         </div>
       </div>
 
       <div className="flex gap-5 mb-3 flex-wrap">
-        <div className="flex items-center gap-1.5 text-content-subtle text-sm">
-          <Moon size={13} className="text-sleep" />
-          <span><strong className="text-content-base">{log.sleep_duration}h</strong> sleep</span>
+        <div className="flex items-center gap-1.5 text-muted text-sm">
+          <Moon size={13} className="text-lavender" />
+          <span><strong className="text-charcoal dark:text-charcoal-dark">{log.sleep_duration}h</strong> sleep</span>
         </div>
-        <div className="flex items-center gap-1.5 text-content-subtle text-sm">
-          <Dumbbell size={13} className="text-accent" />
-          <span><strong className="text-content-base">{log.exercise_duration}m</strong> exercise</span>
+        <div className="flex items-center gap-1.5 text-muted text-sm">
+          <Dumbbell size={13} className="text-sage" />
+          <span><strong className="text-charcoal dark:text-charcoal-dark">{log.exercise_duration}m</strong> exercise</span>
         </div>
       </div>
 
       {log.complaints && (
         <div className="mb-2">
-          <p className="text-[0.7rem] font-semibold text-content-subtle uppercase tracking-widest mb-1">Complaints</p>
-          <p className="text-sm text-content-base leading-relaxed">{log.complaints}</p>
+          <p className="text-[0.7rem] font-semibold text-muted uppercase tracking-widest mb-1">Complaints</p>
+          <p className="text-sm text-charcoal dark:text-charcoal-dark leading-relaxed">{log.complaints}</p>
         </div>
       )}
       {log.notes && (
         <div>
-          <p className="text-[0.7rem] font-semibold text-content-subtle uppercase tracking-widest mb-1">Notes</p>
-          <p className="text-sm text-content-base leading-relaxed">{log.notes}</p>
+          <p className="text-[0.7rem] font-semibold text-muted uppercase tracking-widest mb-1">Notes</p>
+          <p className="text-sm text-charcoal dark:text-charcoal-dark leading-relaxed">{log.notes}</p>
         </div>
       )}
     </Card>
   )
 }
 
-export default function DailyLogPage() {
+function DailyLogPageContent() {
   const [logs, setLogs] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -183,8 +184,8 @@ export default function DailyLogPage() {
     <div className="max-w-[760px] animate-fade-up">
       <div className="flex justify-between items-start mb-7 flex-wrap gap-3">
         <div>
-          <h1 className="font-display text-[1.8rem] font-bold text-content-base mb-1">Daily Log</h1>
-          <p className="text-content-subtle text-sm">Track your daily wellness journey</p>
+          <h1 className="font-display text-[1.8rem] font-bold text-charcoal dark:text-charcoal-dark mb-1">Daily Log</h1>
+          <p className="text-muted text-sm">Track your daily wellness journey</p>
         </div>
         {!showForm && !editingLog && (
           <Button onClick={() => setShowForm(true)}><Plus size={15} /> New log</Button>
@@ -195,7 +196,7 @@ export default function DailyLogPage() {
 
       {showForm && (
         <Card className="mb-6">
-          <h3 className="font-display text-xl font-semibold text-content-base mb-5">New Log Entry</h3>
+          <h3 className="font-display text-xl font-semibold text-charcoal dark:text-charcoal-dark mb-5">New Log Entry</h3>
           <LogForm onSave={handleCreate} onCancel={() => setShowForm(false)} isLoading={saving} />
         </Card>
       )}
@@ -205,7 +206,7 @@ export default function DailyLogPage() {
       </Modal>
 
       <Modal isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} title="Delete log?">
-        <p className="text-content-subtle mb-6">Permanently delete the log for <strong>{deleteTarget?.date}</strong>?</p>
+        <p className="text-muted mb-6">Permanently delete the log for <strong>{deleteTarget?.date}</strong>?</p>
         <div className="flex gap-2.5">
           <Button variant="danger" onClick={handleDelete} className="flex-1">Delete</Button>
           <Button variant="ghost" onClick={() => setDeleteTarget(null)}>Cancel</Button>
@@ -216,10 +217,10 @@ export default function DailyLogPage() {
       <Card className="mb-5 !p-4">
         <div className="flex gap-3 flex-wrap items-end">
           <div className="flex-1 min-w-[130px]">
-            <label className="text-[0.72rem] font-semibold text-content-subtle uppercase tracking-widest block mb-1.5">Month</label>
+            <label className="text-[0.72rem] font-semibold text-muted uppercase tracking-widest block mb-1.5">Month</label>
             <input type="month" value={filter.month}
               onChange={(e) => setFilter(p => ({ ...p, month: e.target.value }))}
-              className="w-full px-3.5 py-2.5 rounded-[10px] border border-stroke text-sm text-content-base bg-bg-surface outline-none focus:border-brand transition-colors" />
+              className="w-full px-3.5 py-2.5 rounded-[10px] border border-border text-sm text-charcoal bg-white outline-none focus:border-rose transition-colors dark:bg-[#1B1B1B] dark:border-border-dark dark:text-charcoal-dark dark:placeholder:text-muted-dark" />
           </div>
           <div className="flex-1 min-w-[130px]">
             <Select label="Mood" value={filter.mood} onChange={(e) => setFilter(p => ({ ...p, mood: e.target.value }))}>
@@ -251,5 +252,13 @@ export default function DailyLogPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function DailyLogPage() {
+  return (
+    <DashboardLayout activePage="logs">
+      <DailyLogPageContent />
+    </DashboardLayout>
   )
 }
