@@ -12,6 +12,7 @@ import DashboardPage from './pages/DashboardPage'
 import StatsPage from './pages/StatsPage'
 import PartnerStatsPage from './pages/PartnerStatsPage'
 import useThemeStore from './store/themeStore'
+import { NotFoundPage, BadRequestPage, ServerErrorPage } from './pages/ErrorPages'
 
 
 function AppWithLayout({ children }) {
@@ -40,7 +41,7 @@ function App() {
           path="/profile-setup"
           element={
             <ProtectedRoute>
-              <div className="p-4">Profile setup coming soon...</div>
+              <ProfileSetupPage />
             </ProtectedRoute>
           }
         />
@@ -49,13 +50,12 @@ function App() {
         <Route path="/partner-stats" element={<PartnerStatsPage />} />
         <Route path="/logs" element={<DailyLogPage />} />
         <Route path="/appointments" element={<AppointmentsPage />} />
+        {/* Error pages */}
+        <Route path="/400" element={<BadRequestPage />} />
+        <Route path="/500" element={<ServerErrorPage />} />
 
-        {/* Protected app routes (AKTIFKAN KODE DIBAWAH KETIKA FITUR SUDAH SIAP) 
-        <Route path="/dashboard" element={<AppWithLayout><DashboardPage /></AppWithLayout>} />
-        <Route path="/logs" element={<AppWithLayout><DailyLogPage /></AppWithLayout>} />
-        <Route path="/appointments" element={<AppWithLayout><AppointmentsPage /></AppWithLayout>} />
-        <Route path="/stats" element={<AppWithLayout><StatsPage /></AppWithLayout>} />
-        <Route path="/partner-stats" element={<AppWithLayout><PartnerStatsPage /></AppWithLayout>} />*/}
+        {/* 404 fallback */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   )
