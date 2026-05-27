@@ -184,7 +184,7 @@ function DailyLogPageContent() {
     <div className="max-w-[760px] animate-fade-up">
       <div className="flex justify-between items-start mb-7 flex-wrap gap-3">
         <div>
-          <h1 className="font-display text-[1.8rem] font-bold text-charcoal dark:text-charcoal-dark mb-1">Daily Log</h1>
+          <h1 className="text-5xl font-bold text-charcoal dark:text-charcoal-dark tracking-tight mb-1">Daily Log</h1>
           <p className="text-muted text-sm">Track your daily wellness journey</p>
         </div>
         {!showForm && !editingLog && (
