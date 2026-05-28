@@ -70,16 +70,20 @@ function AppointmentCard({ appt, onEdit, onDelete, onComplete }) {
           </div>
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center gap-2 text-xs text-muted dark:text-muted-dark">
-              <Calendar size={12} className="text-brand" />
+              {/* FIX: "text-brand" is not in tailwind.config.js → icon had no color class (rendered black/default).
+                  Replaced with defined token: text-rose-deep */}
+              <Calendar size={12} className="text-rose-deep" />
               {safeFormat(appt.appointment_date, 'EEEE, MMMM d, yyyy · h:mm a')}
             </div>
             <div className="flex items-center gap-2 text-xs text-muted dark:text-muted-dark">
-              <User size={12} className="text-accent" />
+              {/* FIX: "text-accent" is not in tailwind.config.js → replaced with text-mauve */}
+              <User size={12} className="text-mauve" />
               Dr. {appt.doctor_name}
             </div>
             {appt.location && (
               <div className="flex items-center gap-2 text-xs text-muted dark:text-muted-dark">
-                <MapPin size={12} className="text-sleep" />
+                {/* FIX: "text-sleep" is not in tailwind.config.js → replaced with text-sage */}
+                <MapPin size={12} className="text-sage" />
                 {appt.location}
               </div>
             )}
@@ -93,11 +97,11 @@ function AppointmentCard({ appt, onEdit, onDelete, onComplete }) {
           {!appt.is_completed && (
             <>
               <button onClick={() => onComplete(appt.id)}
-                className="p-1.5 rounded-lg border border-accent/40 bg-accent/8 text-accent hover:bg-accent/20 transition-colors cursor-pointer">
+                className="p-1.5 rounded-lg border border-sage/40 bg-sage/10 text-sage hover:bg-sage/20 transition-colors cursor-pointer">
                 <CheckCircle2 size={13} />
               </button>
               <button onClick={() => onEdit(appt)}
-                className="p-1.5 rounded-lg border border-border dark:border-border-dark bg-white dark:bg-dark text-muted dark:text-muted-dark hover:border-brand-strong/40 transition-colors cursor-pointer">
+                className="p-1.5 rounded-lg border border-border dark:border-border-dark bg-white dark:bg-dark text-muted dark:text-muted-dark hover:border-rose-deep/40 transition-colors cursor-pointer">
                 <Pencil size={13} />
               </button>
             </>
@@ -226,18 +230,18 @@ function AppointmentsPageContent() {
       ) : (
         <div className="flex flex-col gap-3.5">
           {filtered.map(appt => (
-                <AppointmentCard key={appt.id} appt={appt} onEdit={setEditTarget} onDelete={setDeleteTarget} onComplete={handleComplete} />
+            <AppointmentCard key={appt.id} appt={appt} onEdit={setEditTarget} onDelete={setDeleteTarget} onComplete={handleComplete} />
           ))}
         </div>
       )}
     </div>
   )
 }
- 
-    export default function AppointmentsPage() {
-      return (
-        <DashboardLayout activePage="appointments">
-          <AppointmentsPageContent />
-        </DashboardLayout>
-      )
-    }
+
+export default function AppointmentsPage() {
+  return (
+    <DashboardLayout activePage="appointments">
+      <AppointmentsPageContent />
+    </DashboardLayout>
+  )
+}

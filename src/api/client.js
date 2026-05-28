@@ -25,9 +25,12 @@ api.interceptors.response.use(
         original._retry = true
         try {
           const refreshToken = localStorage.getItem("refresh_token")
-          const response = await axios.post("/api/auth/refresh", { refresh_token: refreshToken })
-          localStorage.setItem("access_token", response.data.access_token)
-          original.headers.Authorization = `Bearer ${response.data.access_token}`
+          // FIX 1: endpoint was "/api/auth/refresh" → backend route is "/api/auth/token/refresh/"
+          // FIX 2: request body used { refresh_token } → backend expects { refresh }
+          const response = await axios.post("/api/auth/token/refresh/", { refresh: refreshToken })
+          // FIX 3: response field was "access_token" → simplejwt returns "access"
+          localStorage.setItem("access_token", response.data.access)
+          original.headers.Authorization = `Bearer ${response.data.access}`
           return api(original)
         } catch {
             localStorage.removeItem("access_token")

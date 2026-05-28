@@ -37,14 +37,17 @@ export default function ProfileSetupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream flex items-center justify-center px-5 py-10">
-      <div className="bg-white rounded-3xl p-10 w-full max-w-md shadow-lg border border-border animate-fade-up">
+    // FIX: was "bg-cream" only — missing "dark:bg-cream-dark" so dark mode had no effect on page bg
+    <div className="min-h-screen bg-cream dark:bg-cream-dark flex items-center justify-center px-5 py-10">
+      {/* FIX: was "bg-white border-border" — missing dark: variants so card was always white in dark mode */}
+      <div className="bg-white dark:bg-dark rounded-3xl p-10 w-full max-w-md shadow-lg border border-border dark:border-border-dark animate-fade-up">
         <div className="text-center mb-9">
           <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blush to-rose flex items-center justify-center mx-auto mb-4">
             <Heart size={24} fill="white" color="white" />
           </div>
-          <h1 className="font-display text-[1.8rem] font-bold text-charcoal mb-2">Set up your profile</h1>
-          <p className="text-muted text-sm">Tell us a little about yourself to personalize Bloom for you.</p>
+          {/* FIX: text-charcoal and text-muted needed dark variants */}
+          <h1 className="font-display text-[1.8rem] font-bold text-charcoal dark:text-charcoal-dark mb-2">Set up your profile</h1>
+          <p className="text-muted dark:text-muted-dark text-sm">Tell us a little about yourself to personalize CARE for you.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -52,7 +55,7 @@ export default function ProfileSetupPage() {
 
           {/* Role selector */}
           <div>
-            <p className="text-[0.75rem] font-semibold text-muted uppercase tracking-widest mb-3">I am the</p>
+            <p className="text-[0.75rem] font-semibold text-muted dark:text-muted-dark uppercase tracking-widest mb-3">I am the</p>
             <div className="grid grid-cols-2 gap-3">
               {[
                 { value: 'mother',  emoji: '🤱', label: 'Mother' },
@@ -66,11 +69,11 @@ export default function ProfileSetupPage() {
                     'p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 text-center',
                     role === r.value
                       ? 'border-rose-deep bg-rose-deep/6'
-                      : 'border-border bg-white hover:border-rose-deep/40',
+                      : 'border-border dark:border-border-dark bg-white dark:bg-dark hover:border-rose-deep/40',
                   ].join(' ')}
                 >
                   <div className="text-[1.8rem] mb-2">{r.emoji}</div>
-                  <div className={`font-semibold text-sm ${role === r.value ? 'text-rose-deep' : 'text-charcoal'}`}>
+                  <div className={`font-semibold text-sm ${role === r.value ? 'text-rose-deep' : 'text-charcoal dark:text-charcoal-dark'}`}>
                     {r.label}
                   </div>
                 </button>

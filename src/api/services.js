@@ -5,5 +5,5 @@ export {
     logsApi,
     appointmentsApi,
     statsApi,
-    partnerStatsApi,
+    messageApi,
 } from "./index";

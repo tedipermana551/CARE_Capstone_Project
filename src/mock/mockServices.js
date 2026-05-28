@@ -152,6 +152,19 @@ export const profileApi = {
     setActiveProfile({ ...activeProfile(), partner: null })
     return ok({})
   },
+
+  uploadAvatar: async (file) => {
+    await delay(400)
+    const url = URL.createObjectURL(file)
+    setActiveProfile({ ...activeProfile(), avatar_url: url })
+    return ok({ avatar_url: url })
+  },
+
+  deleteAvatar: async () => {
+    await delay(300)
+    setActiveProfile({ ...activeProfile(), avatar_url: null })
+    return ok({})
+  },
 }
 
 // ── Pregnancy ─────────────────────────────────────────────────────────────
@@ -224,6 +237,29 @@ export const logsApi = {
     if (params.mood)       result = result.filter((l) => l.mood === params.mood)
 
     return ok(result)
+  },
+
+  partnerMessages: async () => {
+    await delay(200)
+    const SEED = [
+      'Thinking of you today 💕',
+      'How are you feeling? ❤',
+      'You are doing amazing!',
+      "Can't wait to see you tonight",
+      'Sending you love and strength 🌸',
+    ]
+    const partnerName = _activeRole === 'husband'
+      ? _motherProfile.full_name
+      : _husbandProfile.full_name
+    const msgs = partnerLogs()
+      .slice(0, 5)
+      .map((log, i) => ({
+        ...log,
+        partner_message: log.partner_message || SEED[i % SEED.length],
+        sender_display_name: partnerName,
+        has_message: true,
+      }))
+    return ok(msgs)
   },
 }
 
@@ -334,4 +370,9 @@ export const partnerStatsApi = {
       total_logged_days: logs.length,
     })
   },
+}
+
+// ── Message API ────────────────────────────────────────────────────────────
+export const messageApi = {
+  inbox: () => logsApi.partnerMessages(),
 }

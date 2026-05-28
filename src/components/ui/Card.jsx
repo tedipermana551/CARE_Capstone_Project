@@ -22,8 +22,9 @@ export function StatCard({ label, value, icon: Icon, color = '#e8899a', subtext 
       <div className="flex justify-between items-start">
         <div>
           <p className="text-[0.72rem] font-semibold text-muted uppercase tracking-widest mb-1.5">{label}</p>
-          <p className="text-[1.9rem] font-bold text-charcoal leading-none">{value ?? '—'}</p>
-          {subtext && <p className="text-[0.75rem] text-muted mt-1">{subtext}</p>}
+          {/* FIX: was "text-charcoal" only — missing "dark:text-charcoal-dark" → value text was dark in dark mode */}
+          <p className="text-[1.9rem] font-bold text-charcoal dark:text-charcoal-dark leading-none">{value ?? '—'}</p>
+          {subtext && <p className="text-[0.75rem] text-muted dark:text-muted-dark mt-1">{subtext}</p>}
         </div>
         {Icon && (
           <div
@@ -67,10 +68,12 @@ export function Divider({ className = '' }) {
 }
 
 export function Alert({ type = 'error', children }) {
+  // FIX: All variants used hardcoded light-mode Tailwind colors with no dark: alternatives.
+  // In dark mode the alert was unreadable (light background, dark text on dark page).
   const styles = {
-    error:   'bg-red-50 border border-red-200 text-red-800',
-    success: 'bg-green-50 border border-green-200 text-green-800',
-    info:    'bg-blue-50 border border-blue-200 text-blue-800',
+    error:   'bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300',
+    success: 'bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300',
+    info:    'bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300',
   }
   return (
     <div className={`px-4 py-3 rounded-[10px] text-sm ${styles[type] ?? styles.error}`}>
@@ -83,7 +86,7 @@ export function EmptyState({ icon: Icon, title, description, action }) {
   return (
     <div className="text-center py-12 px-6 text-muted dark:text-muted-dark">
       {Icon && (
-        <div className="w-14 h-14 rounded-full bg-border flex items-center justify-center mx-auto mb-4 text-muted-light">
+        <div className="w-14 h-14 rounded-full bg-border dark:bg-border-dark flex items-center justify-center mx-auto mb-4 text-muted-light">
           <Icon size={24} />
         </div>
       )}
@@ -99,14 +102,14 @@ export function Modal({ isOpen, onClose, title, children }) {
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 bg-dark/50 backdrop-blur-sm flex items-center justify-center z-[1000] p-6"
+      className="fixed inset-0 bg-dark/50 backdrop-blur-sm flex items-center justify-center z-[1000] p-3 sm:p-6"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-dark border border-border dark:border-border-dark rounded-3xl p-8 w-full max-w-[520px] max-h-[90vh] overflow-y-auto shadow-lg animate-fade-up"
+        className="bg-white dark:bg-dark border border-border dark:border-border-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 w-full max-w-[520px] max-h-[90vh] overflow-y-auto shadow-lg animate-fade-up"
       >
         {title && (
-          <h2 className="font-display text-[1.4rem] font-semibold text-charcoal mb-6">{title}</h2>
+          <h2 className="font-display text-[1.4rem] font-semibold text-charcoal dark:text-charcoal-dark mb-6">{title}</h2>
         )}
         {children}
       </div>
