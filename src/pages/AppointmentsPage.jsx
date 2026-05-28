@@ -140,7 +140,10 @@ function AppointmentsPageContent() {
     finally { setLoading(false) }
   }
 
-  useEffect(() => { load() }, [])
+  useEffect(() => {
+    const initialize = async () => { await load() }
+    initialize()
+  }, [])
 
   const handleCreate = async (form) => {
     setSaving(true)
