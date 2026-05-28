@@ -11,17 +11,10 @@ import ProfileSetupPage from './pages/ProfileSetupPage'
 import DashboardPage from './pages/DashboardPage'
 import StatsPage from './pages/StatsPage'
 import PartnerStatsPage from './pages/PartnerStatsPage'
+import ProfilePage from './pages/ProfilePage'
 import useThemeStore from './store/themeStore'
 import { NotFoundPage, BadRequestPage, ServerErrorPage } from './pages/ErrorPages'
 
-
-function AppWithLayout({ children }) {
-  return (
-    <ProtectedRoute>
-      <AppLayout>{children}</AppLayout>
-    </ProtectedRoute>
-  )
-}
 
 function App() {
   const initializeTheme = useThemeStore((state) => state.initializeTheme)
@@ -45,11 +38,12 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/stats" element={<StatsPage />} />
-        <Route path="/partner-stats" element={<PartnerStatsPage />} />
-        <Route path="/logs" element={<DailyLogPage />} />
-        <Route path="/appointments" element={<AppointmentsPage />} />
+        <Route path="/dashboard"     element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+        <Route path="/stats"         element={<ProtectedRoute><StatsPage /></ProtectedRoute>} />
+        <Route path="/partner-stats" element={<ProtectedRoute><PartnerStatsPage /></ProtectedRoute>} />
+        <Route path="/logs"          element={<ProtectedRoute><DailyLogPage /></ProtectedRoute>} />
+        <Route path="/appointments"  element={<ProtectedRoute><AppointmentsPage /></ProtectedRoute>} />
+        <Route path="/profile"        element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         {/* Error pages */}
         <Route path="/400" element={<BadRequestPage />} />
         <Route path="/500" element={<ServerErrorPage />} />

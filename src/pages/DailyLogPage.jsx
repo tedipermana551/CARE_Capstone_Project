@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { format, parseISO } from 'date-fns'
-import { Plus, Moon, Dumbbell, Pencil, Trash2, Save, BookOpen } from 'lucide-react'
+import { Plus, Moon, Dumbbell, Pencil, Trash2, Save, BookOpen, Send } from 'lucide-react'
 import { logsApi } from '../api/services'
+import useAuthStore from '../store/authStore'
 import { Card, Badge, Spinner, EmptyState, Alert, Modal } from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import Input, { Textarea, Select } from '../components/ui/Input'
@@ -16,7 +17,7 @@ const MOODS = [
 ]
 const MOOD_BADGE = { great: 'sage', good: 'sage', neutral: 'amber', bad: 'rose', terrible: 'rose' }
 
-function LogForm({ initial = {}, onSave, onCancel, isLoading, isEdit = false }) {
+function LogForm({ initial = {}, onSave, onCancel, isLoading, isEdit = false, hasPartner = false }) {
   const [form, setForm] = useState({
     date: initial.date || format(new Date(), 'yyyy-MM-dd'),
     mood: initial.mood || '',
@@ -24,6 +25,7 @@ function LogForm({ initial = {}, onSave, onCancel, isLoading, isEdit = false }) 
     exercise_duration: initial.exercise_duration || '',
     complaints: initial.complaints || '',
     notes: initial.notes || '',
+    partner_message: initial.partner_message || '',
   })
   const [error, setError] = useState('')
 
@@ -55,7 +57,7 @@ function LogForm({ initial = {}, onSave, onCancel, isLoading, isEdit = false }) 
                 onClick={() => setForm(p => ({ ...p, mood: m.value }))}
                 className={[
                   'px-3.5 py-2 rounded-full border-2 text-xs cursor-pointer transition-all duration-200',
-                  active ? `${m.ring} ${m.bg} ${m.text} font-semibold` : 'border-border bg-white text-muted hover:border-border-strong',
+                  active ? `${m.ring} ${m.bg} ${m.text} font-semibold` : 'border-border dark:border-border-dark bg-white dark:bg-dark text-muted hover:border-border-strong',
                 ].join(' ')}
               >
                 {m.label}
@@ -79,6 +81,26 @@ function LogForm({ initial = {}, onSave, onCancel, isLoading, isEdit = false }) 
       <Textarea label="Notes" placeholder="Anything else you'd like to remember about today..."
         value={form.notes} onChange={(e) => setForm(p => ({ ...p, notes: e.target.value }))} />
 
+      {hasPartner && (
+        <div className="rounded-xl border border-rose-deep/20 bg-rose-deep/4 dark:bg-rose-deep/5 p-4">
+          <div className="flex items-center gap-2 mb-2.5">
+            <Send size={13} className="text-rose-deep" />
+            <label className="text-[0.72rem] font-semibold text-rose-deep uppercase tracking-widest">
+              Note for partner
+            </label>
+          </div>
+          <textarea
+            value={form.partner_message}
+            onChange={(e) => setForm(p => ({ ...p, partner_message: e.target.value }))}
+            placeholder="Write a message for your partner with this log entry… (optional)"
+            rows={3}
+            maxLength={500}
+            className="w-full px-4 py-3 rounded-[10px] border border-rose-deep/20 bg-white dark:bg-dark text-sm text-charcoal dark:text-charcoal-dark placeholder:text-muted dark:placeholder:text-muted-dark focus:outline-none focus:border-rose-deep focus:ring-2 focus:ring-rose-deep/10 transition-all resize-none leading-relaxed"
+          />
+          <p className="text-[0.65rem] text-muted dark:text-muted-dark mt-1 text-right">{form.partner_message.length}/500</p>
+        </div>
+      )}
+
       <div className="flex gap-2.5">
         <Button type="submit" isLoading={isLoading} className="flex-1">
           <Save size={14} /> {isEdit ? 'Save changes' : 'Save log'}
@@ -99,12 +121,14 @@ function LogCard({ log, onEdit, onDelete }) {
           {mood && <Badge variant={MOOD_BADGE[log.mood] || 'muted'}>{mood.label}</Badge>}
         </div>
         <div className="flex gap-1.5">
+        {/* FIX: was "bg-white" without "dark:bg-dark" — buttons stayed white in dark mode */}
           <button onClick={() => onEdit(log)}
-            className="p-2 rounded-lg border border-border bg-white text-muted hover:border-rose-deep/50 transition-colors cursor-pointer">
+            className="p-2 rounded-lg border border-border dark:border-border-dark bg-white dark:bg-dark text-muted hover:border-rose-deep/50 transition-colors cursor-pointer">
             <Pencil size={13} />
           </button>
+          {/* FIX: same bg-white without dark:bg-dark */}
           <button onClick={() => onDelete(log)}
-            className="p-2 rounded-lg border border-border bg-white text-muted hover:border-red-500 hover:text-red-500 transition-colors cursor-pointer">
+            className="p-2 rounded-lg border border-border dark:border-border-dark bg-white dark:bg-dark text-muted hover:border-red-500 hover:text-red-500 transition-colors cursor-pointer">
             <Trash2 size={13} />
           </button>
         </div>
@@ -133,11 +157,22 @@ function LogCard({ log, onEdit, onDelete }) {
           <p className="text-sm text-charcoal dark:text-charcoal-dark leading-relaxed">{log.notes}</p>
         </div>
       )}
+      {log.partner_message && (
+        <div className="mt-3 pt-3 border-t border-rose-deep/15 flex items-start gap-2">
+          <Send size={11} className="text-rose-deep mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="text-[0.65rem] font-semibold text-rose-deep uppercase tracking-widest mb-0.5">Note for partner</p>
+            <p className="text-xs text-charcoal dark:text-charcoal-dark leading-relaxed italic">{log.partner_message}</p>
+          </div>
+        </div>
+      )}
     </Card>
   )
 }
 
 function DailyLogPageContent() {
+  const profile = useAuthStore((state) => state.profile)
+  const hasPartner = !!profile?.partner
   const [logs, setLogs] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -185,7 +220,7 @@ function DailyLogPageContent() {
       <div className="flex justify-between items-start mb-7 flex-wrap gap-3">
         <div>
           <h1 className="text-5xl font-bold text-charcoal dark:text-charcoal-dark tracking-tight mb-1">Daily Log</h1>
-          <p className="text-muted text-sm">Track your daily wellness journey</p>
+          <p className="text-muted dark:text-muted-dark text-sm">Track your daily wellness journey</p>
         </div>
         {!showForm && !editingLog && (
           <Button onClick={() => setShowForm(true)}><Plus size={15} /> New log</Button>
@@ -197,16 +232,16 @@ function DailyLogPageContent() {
       {showForm && (
         <Card className="mb-6">
           <h3 className="font-display text-xl font-semibold text-charcoal dark:text-charcoal-dark mb-5">New Log Entry</h3>
-          <LogForm onSave={handleCreate} onCancel={() => setShowForm(false)} isLoading={saving} />
+          <LogForm onSave={handleCreate} onCancel={() => setShowForm(false)} isLoading={saving} hasPartner={hasPartner} />
         </Card>
       )}
 
       <Modal isOpen={!!editingLog} onClose={() => setEditingLog(null)} title="Edit Log">
-        {editingLog && <LogForm initial={editingLog} onSave={handleUpdate} onCancel={() => setEditingLog(null)} isLoading={saving} isEdit />}
+        {editingLog && <LogForm initial={editingLog} onSave={handleUpdate} onCancel={() => setEditingLog(null)} isLoading={saving} isEdit hasPartner={hasPartner} />}
       </Modal>
 
       <Modal isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} title="Delete log?">
-        <p className="text-muted mb-6">Permanently delete the log for <strong>{deleteTarget?.date}</strong>?</p>
+        <p className="text-muted dark:text-muted-dark mb-6">Permanently delete the log for <strong>{deleteTarget?.date}</strong>?</p>
         <div className="flex gap-2.5">
           <Button variant="danger" onClick={handleDelete} className="flex-1">Delete</Button>
           <Button variant="ghost" onClick={() => setDeleteTarget(null)}>Cancel</Button>
@@ -220,7 +255,7 @@ function DailyLogPageContent() {
             <label className="text-[0.72rem] font-semibold text-muted uppercase tracking-widest block mb-1.5">Month</label>
             <input type="month" value={filter.month}
               onChange={(e) => setFilter(p => ({ ...p, month: e.target.value }))}
-              className="w-full px-3.5 py-2.5 rounded-[10px] border border-border text-sm text-charcoal bg-white outline-none focus:border-rose transition-colors dark:bg-[#1B1B1B] dark:border-border-dark dark:text-charcoal-dark dark:placeholder:text-muted-dark" />
+              className="w-full px-3.5 py-2.5 rounded-[10px] border border-border text-sm text-charcoal bg-white outline-none focus:border-rose transition-colors dark:bg-dark dark:border-border-dark dark:text-charcoal-dark dark:placeholder:text-muted-dark" />
           </div>
           <div className="flex-1 min-w-[130px]">
             <Select label="Mood" value={filter.mood} onChange={(e) => setFilter(p => ({ ...p, mood: e.target.value }))}>

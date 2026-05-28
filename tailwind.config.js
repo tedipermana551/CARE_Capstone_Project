@@ -27,7 +27,7 @@ export default {
         },
         'rose-deep': {
           DEFAULT: '#c0526a',
-          dark: '#f2c4ce',
+          dark: '#c0526a',
         },
         mauve: {
           DEFAULT: '#9b6b7a',

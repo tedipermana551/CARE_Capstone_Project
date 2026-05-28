@@ -12,6 +12,9 @@ const features = [
 ]
 
 export default function LandingPage() {
+  const toggleTheme = useThemeStore((state) => state.toggleTheme)
+  const isDarkMode = useThemeStore((state) => state.isDarkMode)
+
   return (
     <div className="min-h-screen bg-cream dark:bg-cream-dark overflow-x-hidden">
 
@@ -25,11 +28,11 @@ export default function LandingPage() {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={useThemeStore((state) => state.toggleTheme)}
+            onClick={toggleTheme}
             className="p-2 rounded-[10px] border border-border dark:border-border-dark text-charcoal dark:text-charcoal-dark hover:border-rose dark:hover:border-rose-dark transition-colors"
             aria-label="Toggle theme"
           >
-            {useThemeStore((state) => state.isDarkMode) ? <Sun size={16} /> : <Moon size={16} />}
+            {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
           </button>
           <Link to="/login" className="px-5 py-2 rounded-[10px] border border-border dark:border-border-dark text-sm font-medium text-charcoal dark:text-charcoal-dark hover:border-rose dark:hover:border-rose-dark transition-colors no-underline">
             Sign in

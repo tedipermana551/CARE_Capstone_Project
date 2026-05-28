@@ -20,7 +20,7 @@ const handleSubmit = async (e) => {
 
 return (
     <AppLayout>
-    <div className="min-h-screen flex items-center justify-center px-6 pt-24">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-6 py-10">
         <div className="w-full max-w-md">
 
         <Link

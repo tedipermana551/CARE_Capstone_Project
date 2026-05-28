@@ -48,10 +48,6 @@ export const statsApi = {
     streaks: () => api.get("/stats/streaks/"),
 }
 
-export const partnerStatsApi = {
-    summary: (params) => api.get("/partner-stats/summary/", { params }),
-    mood: (params) => api.get("/partner-stats/mood/", { params }),
-    sleep: (params) => api.get("/partner-stats/sleep/", { params }),
-    exercise: (params) => api.get("/partner-stats/exercise/", { params }),
-    streaks: () => api.get("/partner-stats/streaks/"),
+export const messageApi = {
+    inbox: () => logsApi.partnerMessages(),
 }

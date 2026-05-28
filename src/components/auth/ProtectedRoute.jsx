@@ -17,7 +17,7 @@ export default function ProtectedRoute({ children }) {
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-bg-base">
+      <div className="min-h-screen flex items-center justify-center bg-cream dark:bg-cream-dark">
         <Spinner size={36} />
       </div>
     )

@@ -70,7 +70,7 @@ return (
     <DashboardLayout activePage="stats">
     <div className="flex justify-between items-start mb-7 flex-wrap gap-3">
         <div>
-        <h1 className="text-5xl font-bold text-charcoal dark:text-charcoal-dark tracking-tight mb-1">My Statistics</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-charcoal dark:text-charcoal-dark tracking-tight mb-1">My Statistics</h1>
         <p className="text-muted dark:text-muted-dark text-sm">Insights into your wellness journey</p>
         </div>
         <div className="flex gap-1 bg-white dark:bg-dark p-1 rounded-xl border border-border dark:border-border-dark">
