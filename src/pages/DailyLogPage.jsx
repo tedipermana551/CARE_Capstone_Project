@@ -194,7 +194,10 @@ function DailyLogPageContent() {
     finally { setLoading(false) }
   }, [filter])
 
-  useEffect(() => { loadLogs() }, [loadLogs])
+  useEffect(() => {
+    const timer = setTimeout(() => { void loadLogs() }, 0)
+    return () => clearTimeout(timer)
+  }, [loadLogs])
 
   const handleCreate = async (form) => {
     setSaving(true)

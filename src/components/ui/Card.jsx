@@ -16,26 +16,19 @@ export function Card({ children, className = '', hover = false, onClick }) {
   )
 }
 
-export function StatCard({ label, value, icon: Icon, color = '#e8899a', subtext }) {
+export function StatCard({ title, value, sub, icon, bg, emoji }) {
   return (
-    <Card className="!p-5">
-      <div className="flex justify-between items-start">
-        <div>
-          <p className="text-[0.72rem] font-semibold text-muted uppercase tracking-widest mb-1.5">{label}</p>
-          {/* FIX: was "text-charcoal" only — missing "dark:text-charcoal-dark" → value text was dark in dark mode */}
-          <p className="text-[1.9rem] font-bold text-charcoal dark:text-charcoal-dark leading-none">{value ?? '—'}</p>
-          {subtext && <p className="text-[0.75rem] text-muted dark:text-muted-dark mt-1">{subtext}</p>}
-        </div>
-        {Icon && (
-          <div
-            className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: `${color}20`, color }}
-          >
-            <Icon size={20} />
-          </div>
-        )}
+    <div className="bg-white dark:bg-dark rounded-3xl border border-border dark:border-border-dark p-5 md:p-7 shadow-sm hover:shadow-md transition-all">
+      <div className="flex justify-between items-start mb-4 md:mb-6">
+        <p className="text-[10px] tracking-[2px] uppercase font-bold text-muted dark:text-muted-dark">{title}</p>
+        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl ${bg} flex items-center justify-center shadow-sm`}>{icon}</div>
       </div>
-    </Card>
+      <div className="flex items-center gap-2">
+        {emoji && <span className="text-2xl md:text-3xl">{emoji}</span>}
+        <h3 className="text-3xl md:text-4xl font-bold text-charcoal dark:text-charcoal-dark leading-none tracking-tight lowercase">{value}</h3>
+      </div>
+      <p className="text-[11px] text-muted dark:text-muted-dark mt-2 font-bold uppercase tracking-wider">{sub}</p>
+    </div>
   )
 }
 

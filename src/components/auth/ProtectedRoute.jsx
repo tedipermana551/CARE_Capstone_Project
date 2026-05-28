@@ -5,15 +5,19 @@ import { Spinner } from '../ui/Card'
 
 export default function ProtectedRoute({ children }) {
   const { isAuthenticated, fetchProfile, profile } = useAuthStore()
-  const [checking, setChecking] = useState(true)
+
+  // FIX: initialise checking to true ONLY when we actually need to fetch the profile.
+  // Previously the else-branch called setChecking(false) synchronously inside useEffect,
+  // which triggered a cascading render. By initialising the state correctly based on
+  // the current condition, the else-branch is eliminated entirely — we only ever
+  // setChecking(false) after an async fetchProfile() resolves, which is safe.
+  const needsFetch = isAuthenticated && !profile
+  const [checking, setChecking] = useState(needsFetch)
 
   useEffect(() => {
-    if (isAuthenticated && !profile) {
-      fetchProfile().finally(() => setChecking(false))
-    } else {
-      setChecking(false)
-    }
-  }, [isAuthenticated])
+    if (!needsFetch) return          // nothing async needed — no setState called
+    fetchProfile().finally(() => setChecking(false))
+  }, [isAuthenticated])             // re-evaluate if auth status changes
 
   if (checking) {
     return (

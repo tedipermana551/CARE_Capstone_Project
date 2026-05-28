@@ -1,7 +1,14 @@
 import axios from "axios";
 
+const isDev      = import.meta.env.DEV                       // true when `vite dev`
+const backendUrl = import.meta.env.VITE_API_URL ?? ''        // e.g. https://care-api.up.railway.app
+
+const baseURL = isDev
+  ? "/api"            // proxied by vite.config.js during development
+  : `${backendUrl}/api`  // direct absolute URL in production build
+
 const api = axios.create({
-  baseURL: "/api",
+  baseURL,
   headers: {
     "Content-Type": "application/json",
   },

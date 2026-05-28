@@ -36,11 +36,18 @@ const usePregnancyStore = create((set) => ({
     },
 
     fetchUpcomingAppointments: async () => {
-        try {
-            const { data } = await appointmentsApi.upcoming();
-            set({ upcomingAppointments: data.data });
+         try {
+            const { data } = await appointmentsApi.upcoming()
+            const raw = data.data
+            // Normalize: backend may return null, a paginated object, or a plain array
+            const appointments = Array.isArray(raw)
+                ? raw
+                : Array.isArray(raw?.results)
+                ? raw.results
+                : []
+            set({ upcomingAppointments: appointments })
         } catch {
-            set({ upcomingAppointments: [] });
+            set({ upcomingAppointments: [] })
         }
     },
 

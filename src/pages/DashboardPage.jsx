@@ -6,28 +6,13 @@ import useAuthStore from '../store/authStore'
 import usePregnancyStore from '../store/pregnancyStore'
 import { profileApi } from '../api/services'
 import DashboardLayout from '../components/layout/DashboardLayout'
+import { Card, StatCard, Spinner, EmptyState } from '../components/ui/Card'
 
 const MOOD_EMOJI = { great: '😄', good: '😊', neutral: '😐', bad: '😔', terrible: '😢' }
 
 function safeFormat(dateStr, pattern, fallback = '—') {
   try { return dateStr ? format(parseISO(dateStr), pattern) : fallback }
   catch { return fallback }
-}
-
-function StatCard({ title, value, sub, icon, bg, emoji }) {
-  return (
-    <div className="bg-white dark:bg-dark rounded-3xl border border-border dark:border-border-dark p-5 md:p-7 shadow-sm hover:shadow-md transition-all">
-      <div className="flex justify-between items-start mb-4 md:mb-6">
-        <p className="text-[10px] tracking-[2px] uppercase font-bold text-muted dark:text-muted-dark">{title}</p>
-        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl ${bg} flex items-center justify-center shadow-sm`}>{icon}</div>
-      </div>
-      <div className="flex items-center gap-2">
-        {emoji && <span className="text-2xl md:text-3xl">{emoji}</span>}
-        <h3 className="text-3xl md:text-4xl font-bold text-charcoal dark:text-charcoal-dark leading-none tracking-tight lowercase">{value}</h3>
-      </div>
-      <p className="text-[11px] text-muted dark:text-muted-dark mt-2 font-bold uppercase tracking-wider">{sub}</p>
-    </div>
-  )
 }
 
 export default function DashboardPage() {
@@ -40,14 +25,12 @@ export default function DashboardPage() {
   const isLoading = usePregnancyStore((state) => state.isLoading)
   const fetchAllDashboard = usePregnancyStore((state) => state.fetchAllDashboard)
 
-  const [myCode, setMyCode] = useState('')
   const [partnerCode, setPartnerCode] = useState('')
   const [copied, setCopied] = useState(false)
   const [showPartnerLink, setShowPartnerLink] = useState(false)
   const [isLinking, setIsLinking] = useState(false)
 
   useEffect(() => { fetchAllDashboard() }, [])
-  useEffect(() => { if (profile?.unique_code) setMyCode(profile.unique_code) }, [profile])
 
   const copyCode = () => {
     navigator.clipboard.writeText(myCode)
@@ -67,6 +50,7 @@ export default function DashboardPage() {
   }
 
   const progress = pregnancyStatus?.progress_percentage ?? 0
+  const myCode = profile?.unique_code || ''
   const isPartner = profile?.role === 'husband'
 
   return (
@@ -155,8 +139,14 @@ export default function DashboardPage() {
                 </Link>
               </div>
               <div className="space-y-4">
-                {upcomingAppointments?.length > 0 ? (
-                  upcomingAppointments.slice(0, 3).map((appt) => (
+                {!Array.isArray(upcomingAppointments) || upcomingAppointments.length === 0 ? (
+                  <div className="text-muted text-sm">
+                    No upcoming appointments.
+                    <button onClick={() => navigate('/appointments')} className="w-full py-3 md:py-4 border-2 border-rose-deep text-rose-deep font-bold rounded-xl hover:bg-rose-deep hover:text-white transition-all">
+                      Add appointment
+                    </button>
+                  </div>
+                ): (upcomingAppointments.slice(0, 3).map((appt) => (
                     <div key={appt.id} className="group p-4 md:p-5 bg-[#FAF7F4] dark:bg-[#1B1B1B] border border-transparent rounded-2xl transition-all">
                       <h4 className="font-bold text-charcoal dark:text-charcoal-dark text-base md:text-lg mb-1">{appt.title}</h4>
                       <div className="flex items-center gap-4 md:gap-6 mt-2 md:mt-3 flex-wrap">
@@ -168,8 +158,6 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   ))
-                ) : (
-                  <div className="text-muted text-sm">No upcoming appointments.</div>
                 )}
               </div>
             </div>
