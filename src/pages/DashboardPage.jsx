@@ -146,7 +146,7 @@ export default function DashboardPage() {
                       Add appointment
                     </button>
                   </div>
-                ): (upcomingAppointments.slice(0, 3).map((appt) => (
+                ) : (upcomingAppointments.slice(0, 3).map((appt) => (
                     <div key={appt.id} className="group p-4 md:p-5 bg-[#FAF7F4] dark:bg-[#1B1B1B] border border-transparent rounded-2xl transition-all">
                       <h4 className="font-bold text-charcoal dark:text-charcoal-dark text-base md:text-lg mb-1">{appt.title}</h4>
                       <div className="flex items-center gap-4 md:gap-6 mt-2 md:mt-3 flex-wrap">
