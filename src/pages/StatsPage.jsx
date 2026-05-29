@@ -24,7 +24,7 @@ return (
 )
 }
 
-export default function StatsPage() {
+function StatsPageContent() {
 const [period, setPeriod] = useState('monthly')
 const [summary, setSummary] = useState(null)
 const [moodData, setMoodData] = useState(null)
@@ -39,17 +39,15 @@ useEffect(() => {
     try {
         const params = { period }
         const [s, m, sl, ex, st] = await Promise.allSettled([
-        statsApi.summary(params), statsApi.mood(params), statsApi.sleep(params),
-        statsApi.exercise(params), statsApi.streaks(),
+          statsApi.summary(params), statsApi.mood(params), statsApi.sleep(params),
+          statsApi.exercise(params), statsApi.streaks(),
         ])
-        const safeData = (result) =>
-          result.status === 'fulfilled' ? (result.value?.data?.data ?? null) : null
-
-        setSummary(safeData(s))
-        setMoodData(safeData(m))
-        setSleepData(safeData(sl))
-        setExerciseData(safeData(ex))
-        setStreakData(safeData(st))
+        const ok = (r) => r.status === 'fulfilled' ? (r.value?.data?.data ?? null) : null
+        setSummary(ok(s))
+        setMoodData(ok(m))
+        setSleepData(ok(sl))
+        setExerciseData(ok(ex))
+        setStreakData(ok(st))
     } catch (err) {
         console.log(err)
     } finally {
@@ -182,4 +180,8 @@ return (
     )}
     </DashboardLayout>
 )
+}
+
+export default function StatsPage() {
+  return <StatsPageContent />
 }

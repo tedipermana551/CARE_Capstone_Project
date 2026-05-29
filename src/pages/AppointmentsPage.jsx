@@ -169,7 +169,7 @@ function AppointmentsPageContent() {
     catch { setError('Failed to update appointment.') }
   }
 
-  const filtered = appointments.filter(a => {
+  const filtered = (Array.isArray(appointments) ? appointments : []).filter(a => {
     const date = parseISO(a.appointment_date)
     if (filter === 'upcoming')  return !a.is_completed && !isPast(date)
     if (filter === 'completed') return a.is_completed

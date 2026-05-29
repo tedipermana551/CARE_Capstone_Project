@@ -11,7 +11,7 @@ const usePregnancyStore = create((set) => ({
     fetchPregnancyStatus: async () => {
         try {
             const { data } = await pregnancyApi.status();
-            set({ pregnancyStatus: data.data ?? null });
+            set({ pregnancyStatus: data.data });
         } catch {
             set({ pregnancyStatus: null });
         }
@@ -20,7 +20,7 @@ const usePregnancyStore = create((set) => ({
     fetchSummaryStats: async (params) => {
         try {
             const { data } = await statsApi.summary(params);
-            set({ summaryStats: data.data ?? null });
+            set({ summaryStats: data.data });
         } catch {
             set({ summaryStats: null });
         }
@@ -29,7 +29,7 @@ const usePregnancyStore = create((set) => ({
     fetchStreakStats: async () => {
         try {
             const { data } = await statsApi.streaks();
-            set({ streakStats: data.data ?? null });
+            set({ streakStats: data.data });
         } catch {
             set({ streakStats: null });
         }
