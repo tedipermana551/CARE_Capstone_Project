@@ -69,7 +69,7 @@ const useAuthStore = create((set) => ({
             const {data} = await profileApi.me()
             set({ profile: data.data })
             return data.data
-        } catch (err) {
+        } catch {
             return null
         }
     },
