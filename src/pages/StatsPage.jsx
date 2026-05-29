@@ -38,15 +38,18 @@ useEffect(() => {
     setLoading(true)
     try {
         const params = { period }
-        const [s, m, sl, ex, st] = await Promise.all([
+        const [s, m, sl, ex, st] = await Promise.allSettled([
         statsApi.summary(params), statsApi.mood(params), statsApi.sleep(params),
         statsApi.exercise(params), statsApi.streaks(),
         ])
-        setSummary(s.data.data)
-        setMoodData(m.data.data)
-        setSleepData(sl.data.data)
-        setExerciseData(ex.data.data)
-        setStreakData(st.data.data)
+        const safeData = (result) =>
+          result.status === 'fulfilled' ? (result.value?.data?.data ?? null) : null
+
+        setSummary(safeData(s))
+        setMoodData(safeData(m))
+        setSleepData(safeData(sl))
+        setExerciseData(safeData(ex))
+        setStreakData(safeData(st))
     } catch (err) {
         console.log(err)
     } finally {

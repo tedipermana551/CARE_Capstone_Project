@@ -189,7 +189,7 @@ function DailyLogPageContent() {
       if (filter.mood) params.mood = filter.mood
       if (filter.month) params.month = filter.month
       const { data } = await logsApi.list(params)
-      setLogs(data.data)
+      setLogs(Array.isArray(data.data) ? data.data : [])
     } catch { setLogs([]) }
     finally { setLoading(false) }
   }, [filter])

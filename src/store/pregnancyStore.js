@@ -11,7 +11,7 @@ const usePregnancyStore = create((set) => ({
     fetchPregnancyStatus: async () => {
         try {
             const { data } = await pregnancyApi.status();
-            set({ pregnancyStatus: data.data });
+            set({ pregnancyStatus: data.data ?? null });
         } catch {
             set({ pregnancyStatus: null });
         }
@@ -20,7 +20,7 @@ const usePregnancyStore = create((set) => ({
     fetchSummaryStats: async (params) => {
         try {
             const { data } = await statsApi.summary(params);
-            set({ summaryStats: data.data });
+            set({ summaryStats: data.data ?? null });
         } catch {
             set({ summaryStats: null });
         }
@@ -29,25 +29,18 @@ const usePregnancyStore = create((set) => ({
     fetchStreakStats: async () => {
         try {
             const { data } = await statsApi.streaks();
-            set({ streakStats: data.data });
+            set({ streakStats: data.data ?? null });
         } catch {
             set({ streakStats: null });
         }
     },
 
     fetchUpcomingAppointments: async () => {
-         try {
-            const { data } = await appointmentsApi.upcoming()
-            const raw = data.data
-            // Normalize: backend may return null, a paginated object, or a plain array
-            const appointments = Array.isArray(raw)
-                ? raw
-                : Array.isArray(raw?.results)
-                ? raw.results
-                : []
-            set({ upcomingAppointments: appointments })
+        try {
+            const { data } = await appointmentsApi.upcoming();
+            set({ upcomingAppointments: Array.isArray(data.data) ? data.data : [] });
         } catch {
-            set({ upcomingAppointments: [] })
+            set({ upcomingAppointments: [] });
         }
     },
 

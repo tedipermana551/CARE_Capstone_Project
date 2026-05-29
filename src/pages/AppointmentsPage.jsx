@@ -135,7 +135,7 @@ function AppointmentsPageContent() {
 
   const load = async () => {
     setLoading(true)
-    try { const { data } = await appointmentsApi.list(); setAppointments(data.data) }
+    try { const { data } = await appointmentsApi.list(); setAppointments(Array.isArray(data.data) ? data.data : []) }
     catch { setAppointments([]) }
     finally { setLoading(false) }
   }
