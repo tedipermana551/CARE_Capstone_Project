@@ -9,7 +9,19 @@ export const authApi = {
 export const profileApi = {
     me: () => api.get("/profile/me/"),
     setup: (data) => api.post("/profile/setup/", data),
-    update: (data) => api.patch("/profile/me/", data),
+    // Text-only update: nickname, about, due_date, pregnancy_start_date
+    update:        (data) => api.patch('/profile/me/', data, {
+    headers: { 'Content-Type': 'application/json' },
+    }),
+    // Avatar is uploaded to its OWN endpoint with multipart/form-data
+    uploadAvatar:  (file) => {
+    const fd = new FormData()
+    fd.append('avatar', file)
+    return api.patch('/profile/avatar/', fd, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    },
+    deleteAvatar:  () => api.delete('/profile/avatar/'),
     myCode: () => api.get("/profile/my-code/"),
     linkPartner: (code) => api.post("/profile/link-partner/", { code }),
     unlinkPartner: () => api.post("/profile/unlink-partner/"),
@@ -27,6 +39,7 @@ export const logsApi = {
     update: (date, data) => api.put(`/logs/${date}/`, data),
     delete: (date) => api.delete(`/logs/${date}/`),
     partner: (params) => api.get("/logs/partner/", { params }),
+    partnerMessages: (params) => api.get('/logs/partner/messages/', { params }),
 }
 
 export const appointmentsApi = {
