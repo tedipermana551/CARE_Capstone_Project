@@ -44,7 +44,7 @@ export const statsApi = {
     summary: (params) => api.get("/stats/summary/", { params }),
     mood: (params) => api.get("/stats/mood/", { params }),
     sleep: (params) => api.get("/stats/sleep/", { params }),
-    excercise: (params) => api.get("/stats/exercise/", { params }),
+    exercise: (params) => api.get("/stats/exercise/", { params }),
     streaks: () => api.get("/stats/streaks/"),
 }
 

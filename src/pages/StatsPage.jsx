@@ -96,11 +96,11 @@ return (
 
           {/* Summary stats */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
-            <StatCard label="Total logs"     value={summary?.total_logs ?? '—'}                              icon={Calendar} color="#e8899a" />
-            <StatCard label="Current streak" value={`${streakData?.current_streak_days ?? '—'} days`}       icon={Flame}    color="#e8b86d" />
-            <StatCard label="Longest streak" value={`${streakData?.longest_streak_days ?? '—'} days`}       icon={Trophy}   color="#8aab96" />
-            <StatCard label="Avg. sleep"     value={summary ? `${summary.average_sleep_hours}h` : '—'}      icon={Moon}     color="#c4b5d4" />
-            <StatCard label="Avg. exercise"  value={summary ? `${summary.average_exercise_minutes}m` : '—'} icon={Dumbbell} color="#8aab96" />
+            <StatCard title="Total logs"     value={summary?.total_logs ?? '—'}  bg="bg-rose/15"  icon={<Calendar className="text-rose-500"/>} color="#e8899a" />
+            <StatCard title="Current streak" value={`${streakData?.current_streak_days ?? '—'} days`} bg="bg-rose/15"  icon={<Flame className="text-orange-500"/>}    color="#e8b86d" />
+            <StatCard title="Longest streak" value={`${streakData?.longest_streak_days ?? '—'} days`} bg="bg-rose/15"  icon={<Trophy className="text-yellow-500"/>}   color="#8aab96" />
+            <StatCard title="Avg. sleep"     value={summary ? `${summary.average_sleep_hours}h` : '—'} bg="bg-lavender/20"  icon={<Moon className="text-purple-500"/>}     color="#c4b5d4" />
+            <StatCard title="Avg. exercise"  value={summary ? `${summary.average_exercise_minutes}m` : '—'} bg="bg-sage/15" icon={<Dumbbell className="text-emerald-500"/>} color="#8aab96" />
         </div>
 
           {/* Mood row */}
