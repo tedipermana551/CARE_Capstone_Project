@@ -85,10 +85,10 @@ export default function ProfileSetupPage() {
             <div className="flex flex-col gap-4 animate-fade-up">
               <Input label="Due Date *" type="date" value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)} required
-                hint="The expected delivery date for your baby" />
+                hint="The expected born date for your baby" />
               <Input label="Pregnancy Start Date" type="date" value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                hint="First day of your last menstrual period (optional)" />
+                onChange={(e) => setStartDate(e.target.value)} required
+                hint="First day of your last menstrual period" />
             </div>
           )}
 
