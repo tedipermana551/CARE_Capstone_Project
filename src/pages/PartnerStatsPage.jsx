@@ -9,7 +9,7 @@ import useAuthStore from '../store/authStore'
 const MOOD_EMOJI  = { great: '😄', good: '😊', neutral: '😐', bad: '😔', terrible: '😢' }
 const PERIODS     = [{ value: 'weekly', label: 'Week' }, { value: 'monthly', label: 'Month' }, { value: 'all', label: 'All' }]
 
-function SectionHeader({ icon: Icon, title, iconColor = '#e8899a' }) {
+function SectionHeader({ icon: Icon, title, iconColor = '#e8899a' }) { // eslint-disable-line
 return (
     <div className="flex items-center gap-2.5 mb-4">
     <div className="w-8 h-8 rounded-[10px] flex items-center justify-center" style={{ background: `${iconColor}18`, color: iconColor }}>
@@ -43,8 +43,8 @@ useEffect(() => {
         logsApi.partner(params),
         appointmentsApi.partner(),
         ])
-        setRecentLogs(logs.data.data || [])
-        setPartnerAppts(appts.data.data || [])
+        setRecentLogs(Array.isArray(logs.data.data) ? logs.data.data : [])
+        setPartnerAppts(Array.isArray(appts.data.data) ? appts.data.data : [])
     } catch (err) {
         console.log(err)
     } finally {
