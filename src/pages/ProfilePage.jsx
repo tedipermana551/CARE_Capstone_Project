@@ -367,22 +367,24 @@ function ProfilePageContent() {
           Partner Connection
         </h3>
 
-        {/* Invite code row */}
-        <div className="mb-5">
-          <p className="text-[0.72rem] font-semibold text-muted dark:text-muted-dark uppercase tracking-widest mb-2">My Invite Code</p>
-          <div className="flex items-center gap-2">
-            <div className="flex-1 px-4 py-2.5 rounded-[10px] bg-[#FAF7F4] dark:bg-[#1B1B1B] border border-border dark:border-border-dark font-mono text-sm font-bold text-rose-deep tracking-widest">
-              {myCode || profile?.unique_code || '—'}
-            </div>
-            <button
-              onClick={copyCode}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-[10px] border border-border dark:border-border-dark bg-white dark:bg-dark text-sm text-muted dark:text-muted-dark hover:text-rose-deep hover:border-rose-deep/40 transition-all"
-            >
-              {copied ? <CheckCheck size={14} className="text-sage" /> : <Copy size={14} />}
-              {copied ? 'Copied!' : 'Copy'}
-            </button>
+        {/* Invite code row - only show if not linked */}
+       {!profile?.partner && (
+         <div className="mb-5">
+           <p className="text-[0.72rem] font-semibold text-muted dark:text-muted-dark uppercase tracking-widest mb-2">My Invite Code</p>
+           <div className="flex items-center gap-2">
+             <div className="flex-1 px-4 py-2.5 rounded-[10px] bg-[#FAF7F4] dark:bg-[#1B1B1B] border border-border dark:border-border-dark font-mono text-sm font-bold text-rose-deep tracking-widest">
+                {myCode || profile?.unique_code || '—'}
+              </div>
+              <button
+                onClick={copyCode}
+                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-[10px] border border-border dark:border-border-dark bg-white dark:bg-dark text-sm text-muted dark:text-muted-dark hover:text-rose-deep hover:border-rose-deep/40 transition-all"
+              >
+                {copied ? <CheckCheck size={14} className="text-sage" /> : <Copy size={14} />}
+               {copied ? 'Copied!' : 'Copy'}
+             </button>
+           </div>
           </div>
-        </div>
+        )}
 
         {/* Linked partner or empty state */}
         {profile?.partner ? (

@@ -4,7 +4,6 @@ import { Flame, Moon, Dumbbell, Heart, Clock3, ArrowRight, CheckCircle2, Baby, C
 import { format, parseISO } from 'date-fns'
 import useAuthStore from '../store/authStore'
 import usePregnancyStore from '../store/pregnancyStore'
-import { profileApi } from '../api/services'
 import DashboardLayout from '../components/layout/DashboardLayout'
 import { Card, StatCard, Spinner, EmptyState } from '../components/ui/Card'
 
@@ -18,6 +17,7 @@ function safeFormat(dateStr, pattern, fallback = '—') {
 export default function DashboardPage() {
   const navigate = useNavigate()
   const profile = useAuthStore((state) => state.profile)
+  const fetchProfile = useAuthStore((state) => state.fetchProfile)
   const pregnancyStatus = usePregnancyStore((state) => state.pregnancyStatus)
   const summaryStats = usePregnancyStore((state) => state.summaryStats)
   const streakStats = usePregnancyStore((state) => state.streakStats)
@@ -42,7 +42,7 @@ export default function DashboardPage() {
     if (!partnerCode.trim()) return
     setIsLinking(true)
     try {
-      await profileApi.linkPartner(partnerCode)
+      await fetchProfile()
       setShowPartnerLink(false)
       setPartnerCode('')
     } catch (err) { console.log(err) }
@@ -77,7 +77,7 @@ export default function DashboardPage() {
               - text-7xl → text-5xl md:text-7xl
               - mb-10 → mb-6 md:mb-10
           */}
-          {!isPartner && pregnancyStatus && (
+          {pregnancyStatus && (
             <section className="bg-[#B05B6F] rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-10 text-white mb-6 md:mb-8 relative overflow-hidden shadow-xl shadow-rose-deep/10">
               <div className="flex flex-col sm:flex-row justify-between items-start mb-6 md:mb-10 gap-4">
                 <div>
@@ -108,14 +108,26 @@ export default function DashboardPage() {
             </section>
           )}
 
-          {/* HUSBAND CARD — RESPONSIVE FIX R4: same padding + font scale fixes */}
-          {isPartner && (
-            <section className="bg-[#1F2937] rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-10 text-white mb-6 md:mb-8 shadow-xl">
-              <p className="text-[11px] tracking-[2px] uppercase opacity-70 font-bold mb-3 md:mb-4">Partner Support</p>
-              <h2 className="text-4xl md:text-5xl font-bold mb-3">You're doing great 👨</h2>
-              <p className="opacity-80 text-base md:text-lg">Stay involved with appointments, logs, and emotional support.</p>
-            </section>
-          )}
+          {/* PROMPT FOR UNLINKED HUSBAND TO CONNECT */}
+          {isPartner && !pregnancyStatus && (
+           <div className="bg-[#B05B6F]/10 border border-[#B05B6F]/20 text-[#B05B6F] dark:text-rose-400 rounded-[1.5rem] p-6 md:p-8 mb-6 md:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+             <div>
+               <h4 className="font-bold text-lg mb-1">🤰 Pregnancy Countdown</h4>
+               <p className="text-sm opacity-90 font-medium">Link with your partner's account in the "Partner Connection" section below to view her pregnancy progress and baby countdown here.</p>
+             </div>
+             <button 
+               onClick={() => {
+                 window.scrollTo({
+                   top: document.body.scrollHeight,
+                   behavior: 'smooth'
+                 });
+               }}
+               className="bg-[#B05B6F] text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:bg-[#974558] transition-all whitespace-nowrap self-start sm:self-auto"
+             >
+               Connect Partner
+             </button>
+           </div>
+         )}
 
           {/* STATS GRID — already responsive (grid-cols-1 md:grid-cols-2 lg:grid-cols-4) */}
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-10">
